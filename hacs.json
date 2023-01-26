@@ -1,0 +1,5 @@
+{
+    "name": "52PI UPS Integration",
+    "country": ["DE","EN"],
+    "iot_class": ["Local Polling"]
+  }
