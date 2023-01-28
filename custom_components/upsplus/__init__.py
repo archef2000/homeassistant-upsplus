@@ -18,6 +18,8 @@ async def async_setup_entry(
 ) -> bool:
     """Set up platform from a ConfigEntry."""
     hass.data.setdefault(DOMAIN, {})
+    if not os.path.exists("/dev/i2c-1"):
+        raise ConfigEntryNotReady(f"UPS was not found")
     await add_services(hass)
     hass.async_create_task(
         hass.config_entries.async_forward_entry_setup(entry, "sensor")
