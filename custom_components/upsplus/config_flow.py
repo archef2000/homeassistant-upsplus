@@ -1,11 +1,11 @@
+"""All functions for the config flow"""
 import logging
-from copy import deepcopy
 from typing import Any, Dict, Optional
-from .battery import UPSManager, read_buff
-from homeassistant import config_entries, core
+import os
+from homeassistant import config_entries
 from homeassistant.core import callback
 import voluptuous as vol
-import os
+from .battery import UPSManager, read_buff
 from .const import DOMAIN,DEVICE_ADDR
 
 _LOGGER = logging.getLogger(__name__)
@@ -14,13 +14,11 @@ class CustomConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Custom config flow."""
 
     data: Optional[Dict[str, Any]]
-
     async def async_step_user(self, user_input: Optional[Dict[str, Any]] = None):
         """Invoked when a user initiates a flow via the user interface."""
         errors: Dict[str, str] = {}
         if not os.path.exists("/dev/i2c-1"):
             return self.async_abort(reason="no_ups")
-        
         if user_input is not None:
             self.data = {
                     "enable_automatic_shutdown": user_input.get("enable_automatic_shutdown",True),
@@ -88,10 +86,13 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         data = self.config_entry.options.get("upsplus")
         if not data:
             entries = self.hass.config_entries.async_entries()
-            data = [entry.data for entry in entries if entry.data.get("upsplus",False)][0].get("upsplus")
+            entry_data = [entry.data for entry in entries if entry.data.get("upsplus",False)]
+            data = entry_data[0].get("upsplus")
+        curr_enable_automatic_shutdown = data.get("enable_automatic_shutdown",True)
+        curr_automatic_shutdown = data.get("automatic_shutdown_voltage",3700)
         data_schema = {
-            vol.Required("enable_automatic_shutdown", default=data.get("enable_automatic_shutdown",True)): bool,
-            vol.Required("automatic_shutdown_voltage", default=data.get("automatic_shutdown_voltage",3700)): int,
+            vol.Required("enable_automatic_shutdown", default=curr_enable_automatic_shutdown): bool,
+            vol.Required("automatic_shutdown_voltage", default=curr_automatic_shutdown): int,
             vol.Required("sampling_time", default=read_buff(bus,21,22)): int,
             vol.Required("protection_voltage", default=read_buff(bus,17,18)): int
         }
@@ -100,6 +101,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
         )
 
 def config_ups(bus, user_input: Dict[str, Any] = None) -> str:
+    """Set current options from userinput"""
     sampling_time = user_input.get("sampling_time",2)
     if 1 <= sampling_time <= 10:
         bus.write_byte_data(DEVICE_ADDR, 21, sampling_time & 0xFF)

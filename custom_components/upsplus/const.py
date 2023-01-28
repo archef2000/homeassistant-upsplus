@@ -1,3 +1,4 @@
+"""All constants for the integration"""
 DOMAIN = "upsplus"
 DEVICE_ADDR = 0x17
 DEVICE_BUS = 1

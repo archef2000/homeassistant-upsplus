@@ -1,15 +1,18 @@
 """GitHub Custom Component."""
 import asyncio
 import logging
+import os
 from homeassistant.core import HomeAssistant
 from homeassistant import config_entries, core
 from homeassistant.components import persistent_notification
+from homeassistant.exceptions import ConfigEntryNotReady
 from .const import DOMAIN, DEVICE_ADDR
 from .battery import UPSManager
 
 _LOGGER = logging.getLogger(__name__)
 
 async def async_setup(hass, config):
+    """Setup integration."""
     hass.data[DOMAIN] = {}
     return True
 
@@ -19,7 +22,7 @@ async def async_setup_entry(
     """Set up platform from a ConfigEntry."""
     hass.data.setdefault(DOMAIN, {})
     if not os.path.exists("/dev/i2c-1"):
-        raise ConfigEntryNotReady(f"UPS was not found")
+        raise ConfigEntryNotReady("UPS was not found")
     await add_services(hass)
     hass.async_create_task(
         hass.config_entries.async_forward_entry_setup(entry, "sensor")
