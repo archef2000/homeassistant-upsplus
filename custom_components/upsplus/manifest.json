@@ -5,6 +5,8 @@
       "pi-ina219>=1.4.0",
       "smbus2>=0.4.2"
     ],
+  "integration_type": "device",
+  "dependencies": [],
   "documentation": "https://github.com/Archef2000/homeassistant-upsplus/blob/main/docs.md",
   "domain": "upsplus",
   "issue_tracker": "https://github.com/Archef2000/homeassistant-upsplus/issues",
