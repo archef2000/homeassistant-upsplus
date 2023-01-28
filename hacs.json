@@ -1,4 +1,3 @@
 {
-    "name": "52PI UPS Integration",
-    "iot_class": ["Local Polling"]
+    "name": "52PI UPS Integration"
   }
