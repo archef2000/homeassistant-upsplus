@@ -1,0 +1,49 @@
+{
+  "config": {
+    "title": "UPS I2C",
+    "abort": {
+            "no_ups": "There is no UPS found try enabling i2c and restart HA"
+        },
+    "error": {
+      "invalid_sampling_time": "Number is not between 1 and 10",
+      "invalid_protection_voltage": "Number is not between 3700 and 4100"
+    },
+    "step": {
+      "user": {
+        "title": "Setup UPS",
+        "data": {
+          "enable_automatic_shutdown": "(Comming...) Shutdown when voltage is to low",
+          "automatic_shutdown_voltage": "(Comming...) Set voltage for shutdown",
+          "advanced": "Enter advanced setup"
+        },
+        "description": "Set batteryoptions for UPS"
+      },
+      "advanced": {
+        "title": "Options for UPS",
+        "data": {
+          "sampling_time": "Sampling time in minutes",
+          "protection_voltage": "(3700-4100) Set voltage for shutdown"
+        },
+        "description": "Set batteryoptions for UPS"
+      }
+    }
+  },
+ "options": {
+    "error": {
+      "invalid_sampling_time": "Number is not between 1 and 10",
+      "invalid_protection_voltage": "Number is not between 3700 and 4100"
+    },
+    "step": {
+      "init": {
+        "title": "Options for UPS",
+        "data": {
+          "enable_automatic_shutdown": "(Comming...) Shutdown when voltage is to low",
+          "automatic_shutdown_voltage": "(Comming...) Set voltage for shutdown",
+          "sampling_time": "Sampling time in minutes",
+          "protection_voltage": "(3700-4100) Set voltage for shutdown"
+        },
+        "description": "Set batteryoptions for UPS"
+      }
+    }
+  }
+}

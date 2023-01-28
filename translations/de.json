@@ -1,0 +1,49 @@
+{
+  "config": {
+    "title": "UPS I2C",
+    "abort": {
+            "no_ups": "Kein UPS gefunden versuche i2c einzuschalten und HA neuzustarten"
+        },
+    "error": {
+      "invalid_sampling_time": "Prüfinterval muss zwischen 1 and 10 sein",
+      "invalid_protection_voltage": "Schutzspannung muss zwischen 3700 and 4100 sein"
+    },
+    "step": {
+      "user": {
+        "title": "Setup UPS",
+        "data": {
+          "enable_automatic_shutdown": "(Comming...) Herunterfahren wenn Spannung zu niedrig",
+          "automatic_shutdown_voltage": "(Comming...) Spannung wenn Heruntergefahren werden soll",
+          "advanced": "Erweiterte Einstellungen"
+        },
+        "description": "Batterie Einstellungen"
+      },
+      "advanced": {
+        "title": "Optionen for UPS",
+        "data": {
+          "sampling_time": "Prüfinterval in Minuten",
+          "protection_voltage": "(3700-4100) Batterie Schutzspannung"
+        },
+        "description": "Erweiterte Batterie Einstellungen"
+      }
+    }
+  },
+ "options": {
+    "error": {
+      "invalid_sampling_time": "Prüfinterval muss zwischen 1 and 10 sein",
+      "invalid_protection_voltage": "Schutzspannung muss zwischen 3700 and 4100 sein"
+    },
+    "step": {
+      "init": {
+        "title": "Optionen for UPS",
+        "data": {
+          "enable_automatic_shutdown": "(Comming...) Herunterfahren wenn Spannung zu niedrig",
+          "automatic_shutdown_voltage": "(Comming...) Spannung wenn Heruntergefahren werden soll",
+          "sampling_time": "Prüfinterval in Minuten",
+          "protection_voltage": "(3700-4100) Batterie Schutzspannung"
+        },
+        "description": "Erweiterte Batterie Einstellungen"
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+restart:
+  description: Start restart countdown. Disconnect power 30 seconds after shutdown to allow for proper shutdown process. Power will be reconnected shortly after.
+  fields:
+    seconds:
+      description: Time in seconds until system restart
+      example: true
+      required: true
+      name: Restart Timer
+      default: 200
+      selector:
+        number:
+          min: 0
+          max: 200
+          mode: slider
