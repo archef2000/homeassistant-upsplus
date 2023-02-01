@@ -5,7 +5,7 @@ This custom integration is for the [UPS](https://wiki.52pi.com/index.php/EP-0136
 
 It communicates over I2C this needs to be enabled beforehand
 ## Home Assistannt OS
-Use the ssh addon to edit the ˋ/boot/config.txtˋ file and add ˋdtparam=i2c_arm=onˋ
+Use the ssh addon to edit the ˋ/boot/config.txtˋ file and add ˋdtparam=i2c_arm=onˋ and ˋdtparam=i2c_vc=onˋ
 ## Home Assistant Supervised
 Run ˋsudo raspi-configˋ -> ˋInterface Optionsˋ -> ˋI2Cˋ -> ˋEnableˋ and then reboot
 ## Home Assistant Core
