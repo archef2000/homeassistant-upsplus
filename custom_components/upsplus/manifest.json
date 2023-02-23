@@ -1,15 +1,15 @@
 {
+	"domain": "upsplus",
+	"name": "UPS I2C",
 	"codeowners": [
 		"@Archef2000"
 	],
 	"config_flow": true,
 	"dependencies": [],
 	"documentation": "https://github.com/Archef2000/homeassistant-upsplus/blob/main/docs.md",
-	"domain": "upsplus",
 	"integration_type": "device",
 	"iot_class": "local_polling",
 	"issue_tracker": "https://github.com/Archef2000/homeassistant-upsplus/issues",
-	"name": "UPS I2C",
 	"requirements": [
 		"pi-ina219>=1.4.0",
 		"smbus2>=0.4.2"
