@@ -1,4 +1,5 @@
 restart:
+  name: Restart HA and UPS
   description: Start restart countdown. Disconnect power 30 seconds after shutdown to allow for proper shutdown process. Power will be reconnected shortly after.
   fields:
     seconds:
