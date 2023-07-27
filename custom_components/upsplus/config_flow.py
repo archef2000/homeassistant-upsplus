@@ -10,6 +10,12 @@ from .const import DOMAIN,DEVICE_ADDR
 
 _LOGGER = logging.getLogger(__name__)
 
+CONFIG_SCHEMA = {
+    vol.Required("enable_automatic_shutdown", default=True): bool,
+    vol.Required("automatic_shutdown_voltage", default=3700): int,
+    vol.Optional("advanced", default=False): bool,
+}
+
 class CustomConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     """Custom config flow."""
 
@@ -27,13 +33,8 @@ class CustomConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             if user_input.get("advanced", False):
                 return await self.async_step_advanced()
             return self.async_create_entry(title="UPS I2C", data={"upsplus":self.data})
-        data_schema = {
-            vol.Required("enable_automatic_shutdown", default=True): bool,
-            vol.Required("automatic_shutdown_voltage", default=3700): int,
-            vol.Optional("advanced", default=False): bool,
-        }
         return self.async_show_form(
-            step_id="user", data_schema=vol.Schema(data_schema), errors=errors
+            step_id="user", data_schema=vol.Schema(CONFIG_SCHEMA), errors=errors
         )
 
     async def async_step_advanced(self, user_input: Optional[Dict[str, Any]] = None):
