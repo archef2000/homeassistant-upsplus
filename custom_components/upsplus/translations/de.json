@@ -2,7 +2,7 @@
   "config": {
     "title": "UPS I2C",
     "abort": {
-            "no_ups": "Kein UPS gefunden versuche i2c einzuschalten und HA neuzustarten"
+            "no_ups": "Kein UPS gefunden versuche [i2c einzuschalten](https://www.home-assistant.io/common-tasks/os#enable-i2c) und HA neuzustarten"
         },
     "error": {
       "invalid_sampling_time": "Prüfinterval muss zwischen 1 and 10 sein",
