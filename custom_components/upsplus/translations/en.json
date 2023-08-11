@@ -2,7 +2,7 @@
   "config": {
     "title": "UPS I2C",
     "abort": {
-            "no_ups": "There is no UPS found try enabling i2c and restart HA"
+            "no_ups": "There is no UPS found try [enabling i2c](https://www.home-assistant.io/common-tasks/os#enable-i2c) and restart HA"
         },
     "error": {
       "invalid_sampling_time": "Number is not between 1 and 10",
