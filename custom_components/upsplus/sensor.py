@@ -77,9 +77,31 @@ class SensorSMB(UPSDevice, SensorEntity):
         """Return sensor state without updating"""
         return self._state
 
+class SerialNumber(UPSDevice, SensorEntity):
+    """Display Serial Numbers"""
+    def __init__(self, config):
+        """Initialize the sensor with all data"""
+        self._config_id = config.entry_id
+        self._name = "Serial Number"
+        self._attr_name = self._name
+        self._manager = UPSManager()
+        self._attr_unique_id = f"{DOMAIN}_{config.entry_id}_serial_number"
+        self._attr_extra_state_attributes = {
+            "UID1": self._manager.uid1,
+            "UID2": self._manager.uid2,
+            "UID3": self._manager.uid3,
+        }
+        self._state = self._manager.serial_number
+
+    @property
+    def state(self):
+        """Return sensor state without updating"""
+        return self._state
+
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Setup all sensors"""
     sensors = []
+    sensors.append(SerialNumber(config))
     for _ , sensor_entity in SENSOR_LIST.items():
         sensors.append(SensorJSON(hass, sensor_entity, config))
     for entity_id , sensor_entity in SENSOR_LIST_SMBUS.items():
@@ -89,6 +111,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 async def async_setup_entry(hass, config, async_add_entities):
     """Setup all sensors"""
     sensors = []
+    sensors.append(SerialNumber(config))
     for _ , sensor_entity in SENSOR_LIST.items():
         sensors.append(SensorJSON(hass, sensor_entity, config))
     for entity_id , sensor_entity in SENSOR_LIST_SMBUS.items():
