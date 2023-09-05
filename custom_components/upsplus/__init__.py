@@ -2,14 +2,28 @@
 import asyncio
 import logging
 import os
-from homeassistant.core import HomeAssistant
+import json
+import voluptuous as vol
 from homeassistant import config_entries, core
+from homeassistant.core import HomeAssistant, ServiceResponse, ServiceCall, SupportsResponse
 from homeassistant.components import persistent_notification
 from homeassistant.exceptions import ConfigEntryNotReady
-from .const import DOMAIN, DEVICE_ADDR
+from homeassistant.helpers import aiohttp_client
+from .const import DOMAIN, DEVICE_ADDR, UPDATE_URL
 from .battery import UPSManager
 
 _LOGGER = logging.getLogger(__name__)
+
+UPSPLUS_UPDATE_SCHEMA = vol.Schema({
+    vol.Required("ota_mode"): bool,
+    vol.Required("shutdown"): bool,
+    vol.Required("cut_power"): bool,
+    vol.Required("remove_batteries"): bool,
+    vol.Required("insert_batteries"): bool,
+    vol.Required("connect_power"): bool,
+    vol.Required("power_up_system"): bool,
+    vol.Optional("version"): int,
+})
 
 async def async_setup(hass, config):
     """Setup integration."""
@@ -37,7 +51,7 @@ async def async_setup_entry(
 
 async def add_services(hass: HomeAssistant):
     """adds report service"""
-    async def restart(call):
+    async def restart(call: ServiceCall):
         restart_timer = int(call.data.get("seconds", 0))
         if restart_timer == 0:
             UPSManager().bus.write_byte_data(DEVICE_ADDR, 26, 0)
@@ -54,6 +68,49 @@ async def add_services(hass: HomeAssistant):
         if left_time != 0:
             hass.services.call('hassio', 'host_shutdown',{})
     hass.services.async_register(DOMAIN, "restart", restart)
+
+    async def update(call: ServiceCall) -> ServiceResponse:
+        preperation = all(call.data.values())
+        return_json = { "success": False }
+        if not preperation:
+            return_json["error"] = "Please finish the preperation"
+            return return_json
+        client_session = aiohttp_client.async_get_clientsession(hass)
+        ups_manager = UPSManager()
+        request_data={"UID0": ups_manager.uid1, "UID1": ups_manager.uid2, "UID2": ups_manager.uid3}
+        if call.data.get("version"):
+            request_data["ver"] = call.data["version"]
+        response = await client_session.post(UPDATE_URL, data=request_data)
+        json_response =  await response.json()
+        if json_response['code'] != 0:
+            return_json["error"] = json_response['reason']
+            return_json["step"] = "Getting download url"
+            return return_json
+        download_response = await client_session.get(json_response["url"])
+        if download_response.status == 404:
+            return_json["error"] = "Version not found"
+            return_json["step"] = "Downloading firmware"
+            return return_json
+        firmware_data = download_response.content
+        bus = ups_manager.bus
+        while True:
+            data = await firmware_data.read(16)
+            for i in range(len(list(data))):
+                bus.write_byte_data(0x18, i + 1, data[i])
+            bus.write_byte_data(0x18, 50, 250)
+            _LOGGER.error(len(list(data)) == 0)
+            if len(list(data)) == 0:
+                bus.write_byte_data(0X18, 50, 0)
+                break
+        return_json["success"] = True
+        return_json["step"] = "Flashed successful, disconnect all power/batteries and reinstall to use new firmware"
+        return return_json
+    hass.services.async_register(
+        DOMAIN,
+        "update",
+        update,
+        supports_response=SupportsResponse.ONLY,
+        )
     return True
 
 async def async_notification(hass, title, message, n_id=DOMAIN):
