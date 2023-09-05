@@ -98,7 +98,6 @@ async def add_services(hass: HomeAssistant):
             for i in range(len(list(data))):
                 bus.write_byte_data(0x18, i + 1, data[i])
             bus.write_byte_data(0x18, 50, 250)
-            _LOGGER.error(len(list(data)) == 0)
             if len(list(data)) == 0:
                 bus.write_byte_data(0X18, 50, 0)
                 break
