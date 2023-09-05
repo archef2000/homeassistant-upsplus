@@ -1,7 +1,7 @@
 """All constants for the integration"""
 DOMAIN = "upsplus"
 DEVICE_ADDR = 0x17
-DEVICE_BUS = 
+DEVICE_BUS = 1
 UPDATE_URL = "https://api.52pi.com/update"
 
 UPS_ID = "5t89t8th-7g45-jf93-c8534c97ejf9"
