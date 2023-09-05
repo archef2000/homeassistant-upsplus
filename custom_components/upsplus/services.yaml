@@ -13,3 +13,59 @@ restart:
           min: 0
           max: 200
           mode: slider
+update:
+  name: Update UPS
+  description: Update UPS to latest or specified version
+  fields:
+    version:
+      description: Set the version the UPS should update to
+      required: false
+      example: 14
+      name: UPS version
+      selector:
+        number:
+          min: 1
+          max: 30
+          mode: box
+    ota_mode:
+      description: Entered UPS OTA mode via `Enter OTA` button from integration
+      required: true
+      name: 1. Entered UPS OTA mode
+      selector:
+        boolean:
+    shutdown:
+      description: System got shutdown
+      required: true
+      name: 2. System got shutdown
+      selector:
+        boolean:
+    cut_power:
+      description: Cut off the external charging power
+      required: true
+      name: 3. Cut external power
+      selector:
+        boolean:
+    remove_batteries:
+      description: Betteries got removed
+      required: true
+      name: 4. Batteries removed
+      selector:
+        boolean:
+    insert_batteries:
+      description: Betteries got reinserted
+      required: true
+      name: 5. Batteries reinserted
+      selector:
+        boolean:
+    connect_power:
+      description: Power connected
+      required: true
+      name: 6. Connect external power
+      selector:
+        boolean:
+    power_up_system:
+      description: Start system via UPS button
+      required: true
+      name: 7. Start system
+      selector:
+        boolean:
