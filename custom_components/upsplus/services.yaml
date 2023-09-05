@@ -15,7 +15,7 @@ restart:
           mode: slider
 update:
   name: Update UPS
-  description: Update UPS to latest or specified version
+  description: Update UPS to latest or specified version. First read the docs on how to update the UPS!
   fields:
     version:
       description: Set the version the UPS should update to
