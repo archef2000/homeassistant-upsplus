@@ -38,15 +38,7 @@ async def async_setup_entry(
     if not os.path.exists("/dev/i2c-1"):
         raise ConfigEntryNotReady("UPS was not found")
     await add_services(hass)
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "sensor")
-    )
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "button")
-    )
-    hass.async_create_task(
-        hass.config_entries.async_forward_entry_setup(entry, "switch")
-    )
+    await hass.config_entries.async_forward_entry_setup(entry, ["sensor","button","switch"])
     return True
 
 async def add_services(hass: HomeAssistant):
