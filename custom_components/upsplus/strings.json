@@ -1,5 +1,4 @@
 {
-  "title": "UPS I2C",
   "config": {
     "abort": {
       "no_ups": "There is no UPS found try [enabling i2c](https://www.home-assistant.io/common-tasks/os#enable-i2c) and restart HA"
