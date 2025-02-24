@@ -1,5 +1,6 @@
 """All functions for reading data from the UPS"""
 import smbus2
+import concurrent.futures
 from ina219 import INA219
 from .const import DEVICE_BUS, DEVICE_ADDR
 
