@@ -17,10 +17,6 @@ class UPSManager:
     def __init__(self):
         """initiate UPS operation"""
         self._initialize_sensors()
-        #self.ina_supply = INA219(0.00725, busnum=DEVICE_BUS, address=0x40)
-        #self.ina_supply.configure()
-        #self.ina_battery = INA219(0.005, busnum=DEVICE_BUS, address=0x45)
-        #self.ina_battery.configure()
         self.bus = smbus2.SMBus(DEVICE_BUS)
         self.sw_version = read_buff(self.bus,40,41)
         self.serial_number = ("%08X" % read_buff(self.bus,240,241,242,243)) + "-" + ("%08X" % read_buff(self.bus,244,245,246,247)) + "-" + ("%08X" % read_buff(self.bus,248,249,250,251))
